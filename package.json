@@ -1,6 +1,6 @@
 {
   "name": "usb-serial-plugin",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "This plugin can be used for reading data from other device over the usb channel",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -45,25 +45,25 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^6.1.1",
-    "@capacitor/cli": "^6.1.1",
-    "@capacitor/core": "^6.1.1",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
     "@capacitor/docgen": "^0.2.2",
-    "@capacitor/ios": "^6.1.1",
+    "@capacitor/ios": "^6.1.2",
     "@ionic/eslint-config": "^0.4.0",
     "@ionic/prettier-config": "^4.0.0",
     "@ionic/swiftlint-config": "^1.1.2",
-    "@typescript-eslint/eslint-plugin": "7.16.1",
-    "eslint": "^9.7.0",
+    "@typescript-eslint/eslint-plugin": "8.5.0",
+    "eslint": "^9.10.0",
     "prettier": "~3.3.3",
     "prettier-plugin-java": "~2.6.4",
     "rimraf": "^6.0.1",
-    "rollup": "^4.18.1",
+    "rollup": "^4.21.3",
     "swiftlint": "^1.0.2",
     "typescript": "~5.4.5"
   },
   "peerDependencies": {
-    "@capacitor/core": "^6.1.1"
+    "@capacitor/core": "^6.1.2"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
