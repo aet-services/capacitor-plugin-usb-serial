@@ -1,7 +1,0 @@
-{
-  "name": "usb-serial-plugin-example",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

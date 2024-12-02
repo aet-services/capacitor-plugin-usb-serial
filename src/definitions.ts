@@ -1,40 +1,48 @@
-export type CallbackID = string;
-
-export type MyPluginCallback = (data: UsbSerialResponse) => void;
-
-export interface UsbSerialPlugin {
-  usbAttachedDetached(callback: MyPluginCallback): Promise<CallbackID>;
-  connectedDevices(): Promise<UsbSerialResponse>;
-  openSerial(options: UsbSerialOptions): Promise<UsbSerialResponse>;
-  closeSerial(): Promise<UsbSerialResponse>;
-  readSerial(): Promise<UsbSerialResponse>;
-  writeSerial(data: UsbSerialWriteOptions): Promise<UsbSerialResponse>;
-  registerReadCall(callback: MyPluginCallback): Promise<CallbackID>;
-}
+import { PluginListenerHandle } from '@capacitor/core';
 
 export interface UsbSerialOptions {
-  deviceId: number;
-  portNum: number;
+  vendorId: string;
+  productId: string;
+  portNum?: number;
   baudRate?: number;
   dataBits?: number;
   stopBits?: number;
   parity?: number;
   dtr?: boolean;
   rts?: boolean;
-  sleepOnPause?: boolean;
 }
 
-export interface UsbSerialWriteOptions {
-  data: string;
+export interface UsbDeviceInfo {
+  deviceName: string;
+  vendorId: string;
+  productId: string;
+  deviceId: number;
+  serialNumber: string | null;
 }
 
-export interface UsbSerialResponse {
-  success: boolean;
-  error?: UsbSerialError;
-  data?: any;
-}
-
-export interface UsbSerialError {
-  message: string;
-  cause: string;
+export interface UsbSerialPlugin {
+  listDevices(): Promise<{ devices: UsbDeviceInfo[] }>;
+  openSerial(options: UsbSerialOptions): Promise<void>;
+  closeSerial(): Promise<void>;
+  writeSerial(options: { data: string }): Promise<void>;
+  addListener(
+    eventName: 'attached' | 'detached',
+    listenerFunc: (device: UsbDeviceInfo) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'connected' | 'disconnected',
+    listenerFunc: () => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'data',
+    listenerFunc: (data: { data: string }) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'log',
+    listenerFunc: (data: { text: string; tag: string }) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'error',
+    listenerFunc: (data: { error: string }) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
