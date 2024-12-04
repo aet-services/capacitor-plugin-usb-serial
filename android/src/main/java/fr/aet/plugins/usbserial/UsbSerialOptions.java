@@ -3,8 +3,8 @@ package fr.aet.plugins.usbserial;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 
 public class UsbSerialOptions {
-    public String vendorId = "";
-    public String productId = "";
+    public int vendorId = 0;
+    public int productId = 0;
     public int portNum = 0;
     public int baudRate = 115200;
     public int dataBits = UsbSerialPort.DATABITS_8;

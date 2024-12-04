@@ -128,12 +128,9 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
             UsbDevice device = null;
             UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
 
-            this.callback.log("vendorId", settings.vendorId);
-            this.callback.log("productId", settings.productId);
-
             for (UsbDevice usbDevice : usbManager.getDeviceList().values()) {
-                if ((usbDevice.getVendorId() == Integer.parseInt(settings.vendorId, 16)) &&
-                    (usbDevice.getProductId() == Integer.parseInt(settings.productId, 16)))
+                if ((usbDevice.getVendorId() == settings.vendorId) &&
+                    (usbDevice.getProductId() == settings.productId))
                     device = usbDevice;
                     break;
             }
@@ -218,8 +215,8 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
 
         try {
             deviceInfo.put("deviceName", device.getDeviceName());
-            deviceInfo.put("vendorId", String.format("%04X", device.getVendorId()));
-            deviceInfo.put("productId", String.format("%04X", device.getProductId()));
+            deviceInfo.put("vendorId", device.getVendorId());
+            deviceInfo.put("productId", device.getProductId());
             deviceInfo.put("deviceId", device.getDeviceId());
             deviceInfo.put("serialNumber", device.getSerialNumber());
         } catch (Exception ignored) {

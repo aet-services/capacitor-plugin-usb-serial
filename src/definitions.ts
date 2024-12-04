@@ -1,8 +1,8 @@
 import { PluginListenerHandle } from '@capacitor/core';
 
 export interface UsbSerialOptions {
-  vendorId: string;
-  productId: string;
+  vendorId: number;
+  productId: number;
   portNum?: number;
   baudRate?: number;
   dataBits?: number;
@@ -14,8 +14,8 @@ export interface UsbSerialOptions {
 
 export interface UsbDeviceInfo {
   deviceName: string;
-  vendorId: string;
-  productId: string;
+  vendorId: number;
+  productId: number;
   deviceId: number;
   serialNumber: string | null;
 }
@@ -45,4 +45,28 @@ export interface UsbSerialPlugin {
     eventName: 'error',
     listenerFunc: (data: { error: string }) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
+}
+
+/**
+ * Enum representing USB serial exception messages.
+ */
+export enum UsbSerialExceptionMessages {
+  /** Connection failed because the device was not found. */
+  ConnectionFailedDeviceNotFound = 'connectionFailed:DeviceNotFound',
+  /** Connection failed because no driver was found for the device. */
+  ConnectionFailedNoDriverForDevice = 'connectionFailed:NoDriverForDevice',
+  /** Connection failed because no available ports were found. */
+  ConnectionFailedNoAvailablePorts = 'connectionFailed:NoAvailablePorts',
+  /** Connection failed because USB connection permission was denied. */
+  ConnectionFailedUsbConnectionPermissionDenied = 'connectionFailed:UsbConnectionPermissionDenied',
+  /** Connection failed because serial open operation failed. */
+  ConnectionFailedSerialOpenFailed = 'connectionFailed:SerialOpenFailed',
+  /** Write operation failed because the device is not connected. */
+  WriteFailedDeviceNotConnected = 'writeFailed:DeviceNotConnected',
+  /** Write operation failed because the data was empty. */
+  WriteFailedEmptyData = 'writeFailed:EmptyData',
+  /** Write operation failed because the connection was lost. */
+  WriteFailedConnectionLost = 'writeFailed:ConnectionLost',
+  /** Listing devices failed because devices cannot be listed. */
+  ListFailedCannotListDevices = 'listFailed:CannotListDevices',
 }

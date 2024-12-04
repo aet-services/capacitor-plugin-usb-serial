@@ -31,7 +31,7 @@ public class UsbSerialPlugin extends Plugin implements Callback {
             jsObject.put("devices", devices);
             call.resolve(jsObject);
         } catch (Exception e) {
-            call.reject(e.toString());
+            call.reject(extractIOExceptionMessage(e.toString()));
         }
     }
 
@@ -41,10 +41,10 @@ public class UsbSerialPlugin extends Plugin implements Callback {
             UsbSerialOptions settings = new UsbSerialOptions();
 
             if (call.hasOption("vendorId"))
-                settings.vendorId = call.getString("vendorId");
+                settings.vendorId = call.getInt("vendorId");
 
             if (call.hasOption("productId"))
-                settings.productId = call.getString("productId");
+                settings.productId = call.getInt("productId");
 
             if (call.hasOption("portNum"))
                 settings.portNum = call.getInt("portNum");
@@ -70,7 +70,7 @@ public class UsbSerialPlugin extends Plugin implements Callback {
             usbSerial.openSerial(settings);
             call.resolve(new JSObject());
         } catch (Exception e) {
-            call.reject(e.toString());
+            call.reject(extractIOExceptionMessage(e.toString()));
         }
     }
 
@@ -80,7 +80,7 @@ public class UsbSerialPlugin extends Plugin implements Callback {
             usbSerial.closeSerial();
             call.resolve(new JSObject());
         } catch (Exception e) {
-            call.reject(e.toString());
+            call.reject(extractIOExceptionMessage(e.toString()));
         }
     }
 
@@ -91,7 +91,7 @@ public class UsbSerialPlugin extends Plugin implements Callback {
             usbSerial.writeSerial(data);
             call.resolve(new JSObject());
         } catch (Exception e) {
-            call.reject(e.toString());
+            call.reject(extractIOExceptionMessage(e.toString()));
         }
     }
 
@@ -139,5 +139,14 @@ public class UsbSerialPlugin extends Plugin implements Callback {
         JSObject ret = new JSObject();
         ret.put("error", error.toString());
         notifyListeners("error", ret);
-    }    
+    }
+
+    private String extractIOExceptionMessage(String message) {
+        String key = "java.io.IOException:";
+        int index = message.indexOf(key);
+        if (index != -1) {
+            return message.substring(index + key.length()).trim();
+        }
+        return message.trim();
+    }
 }

@@ -163,8 +163,8 @@ addListener(eventName: 'error', listenerFunc: (data: { error: string; }) => void
 | Prop               | Type                        |
 | ------------------ | --------------------------- |
 | **`deviceName`**   | <code>string</code>         |
-| **`vendorId`**     | <code>string</code>         |
-| **`productId`**    | <code>string</code>         |
+| **`vendorId`**     | <code>number</code>         |
+| **`productId`**    | <code>number</code>         |
 | **`deviceId`**     | <code>number</code>         |
 | **`serialNumber`** | <code>string \| null</code> |
 
@@ -173,8 +173,8 @@ addListener(eventName: 'error', listenerFunc: (data: { error: string; }) => void
 
 | Prop            | Type                 |
 | --------------- | -------------------- |
-| **`vendorId`**  | <code>string</code>  |
-| **`productId`** | <code>string</code>  |
+| **`vendorId`**  | <code>number</code>  |
+| **`productId`** | <code>number</code>  |
 | **`portNum`**   | <code>number</code>  |
 | **`baudRate`**  | <code>number</code>  |
 | **`dataBits`**  | <code>number</code>  |
