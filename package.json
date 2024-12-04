@@ -1,5 +1,5 @@
 {
-  "name": "usb-serial-plugin",
+  "name": "@aet-services/usb-serial-plugin",
   "version": "0.0.15",
   "description": "This plugin can be used for reading data from other device over the usb channel",
   "main": "dist/plugin.cjs.js",
