@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node v20
+        uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          cat <<EOF > .npmrc
+          registry=https://registry.npmjs.org/
+          @aet-services:registry=https://npm.pkg.github.com/
+          //npm.pkg.github.com/:_authToken=${{secrets.NPM_PKG_GITHUB_AUTH_TOKEN}}
+          EOF
+          npm i
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
