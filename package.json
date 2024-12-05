@@ -17,7 +17,7 @@
   "author": "Ludovic Lindor <ludovic.lindor@aet.fr>",
   "license": "MIT",
   "publishConfig": {
-  "@aet-services:registry": "https://npm.pkg.github.com"
+    "@aet-services:registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
