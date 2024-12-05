@@ -10,9 +10,9 @@
   "files": [
     "android/src/main/",
     "android/build.gradle",
+    "dist/",
     "ios/Plugin/",
-    "UsbSerialPlugin.podspec",
-    "dist/"
+    "UsbSerialPlugin.podspec"
   ],
   "author": "Ludovic Lindor <ludovic.lindor@aet.fr>",
   "license": "MIT",
@@ -23,13 +23,11 @@
   "bugs": {
     "url": "https://github.com/aet-services/capacitor-plugin-usb-serial/issues"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },  
   "keywords": [
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "usbserial"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
