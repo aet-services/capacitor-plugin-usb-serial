@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>aet-services-usb-serial-plugin</name>
-	<comment>Project aet-services-usb-serial-plugin created by Buildship.</comment>
+	<name>aet-services-capacitor-plugin-usb-serial</name>
+	<comment>Project aet-services-capacitor-plugin-usb-serial created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

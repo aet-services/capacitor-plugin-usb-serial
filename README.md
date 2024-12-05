@@ -5,7 +5,7 @@ This plugin can be used for reading data from other device over the usb channel
 ## Install
 
 ```bash
-npm install @aet-services/usb-serial-plugin
+npm install @aet-services/capacitor-plugin-usb-serial
 npx cap sync
 ```
 
