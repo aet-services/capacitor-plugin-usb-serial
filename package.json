@@ -16,6 +16,9 @@
   ],
   "author": "Ludovic Lindor <ludovic.lindor@aet.fr>",
   "license": "MIT",
+  "publishConfig": {
+  "@aet-services:registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aet-services/capacitor-plugin-usb-serial.git"

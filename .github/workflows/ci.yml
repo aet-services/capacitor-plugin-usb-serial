@@ -40,12 +40,9 @@ jobs:
       #     name: dist
       #     path: dist
 
-      - name: Publish to Github Release
-        uses: softprops/action-gh-release@v2
+      - run: npm publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          prerelease: ${{ contains(github.event.head_commit.message, 'beta') }}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   lint:
     runs-on: ubuntu-24.04
