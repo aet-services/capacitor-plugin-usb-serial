@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-plugin-usb-serial",
+  "name": "@aet-services/capacitor-plugin-usb-serial",
   "version": "0.0.25",
   "description": "This plugin can be used for reading data from other device over the usb channel",
   "main": "dist/plugin.cjs.js",
