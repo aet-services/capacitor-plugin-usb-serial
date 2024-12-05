@@ -1,4 +1,4 @@
-# usb-serial-plugin
+# capacitor-plugin-usb-serial
 
 This plugin can be used for reading data from other device over the usb channel
 

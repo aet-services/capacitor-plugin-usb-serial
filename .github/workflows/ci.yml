@@ -54,6 +54,7 @@ jobs:
         run: npm run build
 
   publish:
+    needs: [lint, build]
     runs-on: ubuntu-24.04
     if: startswith(github.ref, 'refs/tags/v')
     steps:
