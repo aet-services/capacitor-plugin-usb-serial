@@ -6,6 +6,13 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
+  "exports": {
+    ".": {
+      "require": "./dist/plugin.cjs.js",
+      "import": "./dist/esm/index.js"
+    }
+  },
+  "type": "module",
   "files": [
     "android/src/main/",
     "android/build.gradle",
