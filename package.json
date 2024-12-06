@@ -6,13 +6,6 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
-  "exports": {
-    ".": {
-      "require": "./dist/plugin.cjs.js",
-      "import": "./dist/esm/index.js"
-    }
-  },
-  "type": "module",
   "files": [
     "android/src/main/",
     "android/build.gradle",
@@ -39,7 +32,6 @@
     "usbserial"
   ],
   "scripts": {
-    "prepare": "npm run build",
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
