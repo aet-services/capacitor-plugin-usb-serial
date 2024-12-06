@@ -53,12 +53,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-
   publish:
     needs: [lint, build]
     runs-on: ubuntu-24.04
