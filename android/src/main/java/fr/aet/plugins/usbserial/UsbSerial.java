@@ -70,23 +70,23 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
         }, new IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED));
 
         // context.registerReceiver(new BroadcastReceiver() {
-        //     @Override
-        //     public void onReceive(Context context, Intent intent) {
-        //         String action = intent.getAction();
-        //         if (ACTION_USB_PERMISSION.equals(action)) {
-        //             synchronized (this) {
-        //                 UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-        //                 if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-        //                     if (device != null && (device == currentDevice)) {
-        //                         try {
-        //                             openSerialPort(device);
-        //                         } catch (Exception ignored) {
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
+        // @Override
+        // public void onReceive(Context context, Intent intent) {
+        // String action = intent.getAction();
+        // if (ACTION_USB_PERMISSION.equals(action)) {
+        // synchronized (this) {
+        // UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        // if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+        // if (device != null && (device == currentDevice)) {
+        // try {
+        // openSerialPort(device);
+        // } catch (Exception ignored) {
+        // }
+        // }
+        // }
+        // }
+        // }
+        // }
         // }, new IntentFilter(ACTION_USB_PERMISSION));
     }
 
@@ -130,9 +130,10 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
 
             for (UsbDevice usbDevice : usbManager.getDeviceList().values()) {
                 if ((usbDevice.getVendorId() == settings.vendorId) &&
-                    (usbDevice.getProductId() == settings.productId))
+                        (usbDevice.getProductId() == settings.productId)) {
                     device = usbDevice;
                     break;
+                }
             }
             if (device == null) {
                 throw new IOException("connectionFailed:DeviceNotFound");
@@ -148,10 +149,9 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
 
             if (!usbManager.hasPermission(driver.getDevice())) {
                 PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(context, 0,
-                                                                               new Intent(ACTION_USB_PERMISSION),
-                                                                                          PendingIntent.FLAG_CANCEL_CURRENT |
-                                                                                          PendingIntent.FLAG_IMMUTABLE
-                );
+                        new Intent(ACTION_USB_PERMISSION),
+                        PendingIntent.FLAG_CANCEL_CURRENT |
+                                PendingIntent.FLAG_IMMUTABLE);
                 usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
                 throw new IOException("connectionFailed:UsbConnectionPermissionDenied");
             }
@@ -164,8 +164,10 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
             usbSerialPort = driver.getPorts().get(settings.portNum);
             usbSerialPort.open(usbConnection);
             usbSerialPort.setParameters(settings.baudRate, settings.dataBits, settings.stopBits, settings.parity);
-            if (settings.dtr) usbSerialPort.setDTR(true);
-            if (settings.rts) usbSerialPort.setRTS(true);
+            if (settings.dtr)
+                usbSerialPort.setDTR(true);
+            if (settings.rts)
+                usbSerialPort.setRTS(true);
 
             usbIoManager = new SerialInputOutputManager(usbSerialPort, this);
             usbIoManager.start();
@@ -234,5 +236,5 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
                 this.callback.disconnected();
             }
         }
-    }    
+    }
 }
