@@ -1,16 +1,13 @@
 import { WebPlugin } from '@capacitor/core';
-import type { UsbSerialOptions, UsbSerialPlugin } from './definitions';
+import type { UsbSerialOptions, UsbSerialPlugin, UsbDeviceInfo } from './definitions';
 export declare class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
-    connectedDevices(): Promise<{
-        devices: [];
+    listDevices(): Promise<{
+        devices: UsbDeviceInfo[];
     }>;
     openSerial(options: UsbSerialOptions): Promise<void>;
     closeSerial(): Promise<void>;
-    readSerial(): Promise<{
-        data: string;
-    }>;
     writeSerial(options: {
         data: string;
     }): Promise<void>;
-    addListener(eventName: 'log' | 'connected' | 'attached' | 'detached' | 'data' | 'error', listenerFunc: (data: any) => void): any;
+    addListener(eventName: 'attached' | 'detached' | 'connected' | 'disconnected' | 'data' | 'error' | 'log', listenerFunc: (data: any) => void): any;
 }

@@ -1,8 +1,9 @@
 import { PluginListenerHandle } from '@capacitor/core';
 
 export interface UsbSerialOptions {
-  deviceId: number;
-  portNum: number;
+  vendorId: number;
+  productId: number;
+  portNum?: number;
   baudRate?: number;
   dataBits?: number;
   stopBits?: number;
@@ -11,41 +12,61 @@ export interface UsbSerialOptions {
   rts?: boolean;
 }
 
-export interface UsbSerialDevice {
-  pid: number;
-  vid: number;
-  did: number;
+export interface UsbDeviceInfo {
+  deviceName: string;
+  vendorId: number;
+  productId: number;
+  deviceId: number;
+  serialNumber: string | null;
 }
 
 export interface UsbSerialPlugin {
-  connectedDevices(): Promise<{ devices: [] }>;
+  listDevices(): Promise<{ devices: UsbDeviceInfo[] }>;
   openSerial(options: UsbSerialOptions): Promise<void>;
   closeSerial(): Promise<void>;
-  readSerial(): Promise<{ data: string }>;
   writeSerial(options: { data: string }): Promise<void>;
-
   addListener(
-    eventName: 'log',
-    listenerFunc: (data: { text: string; tag: string }) => void
+    eventName: 'attached' | 'detached',
+    listenerFunc: (device: UsbDeviceInfo) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
   addListener(
-    eventName: 'connected',
-    listenerFunc: (data: UsbSerialDevice) => void
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
-  addListener(
-    eventName: 'attached',
-    listenerFunc: (data: UsbSerialDevice) => void
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
-  addListener(
-    eventName: 'detached',
-    listenerFunc: (data: UsbSerialDevice) => void
+    eventName: 'connected' | 'disconnected',
+    listenerFunc: () => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
   addListener(
     eventName: 'data',
-    listenerFunc: (data: { data: string }) => void
+    listenerFunc: (data: { data: string }) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'log',
+    listenerFunc: (data: { text: string; tag: string }) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
   addListener(
     eventName: 'error',
-    listenerFunc: (data: { error: string }) => void
+    listenerFunc: (data: { error: string | UsbSerialErrorMsg }) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
+}
+
+/**
+ * Enum representing USB serial error messages.
+ */
+export enum UsbSerialErrorMsg {
+  /** Connection failed because the device was not found. */
+  ConnectionFailedDeviceNotFound = 'connectionFailed:DeviceNotFound',
+  /** Connection failed because no driver was found for the device. */
+  ConnectionFailedNoDriverForDevice = 'connectionFailed:NoDriverForDevice',
+  /** Connection failed because no available ports were found. */
+  ConnectionFailedNoAvailablePorts = 'connectionFailed:NoAvailablePorts',
+  /** Connection failed because USB connection permission was denied. */
+  ConnectionFailedUsbConnectionPermissionDenied = 'connectionFailed:UsbConnectionPermissionDenied',
+  /** Connection failed because serial open operation failed. */
+  ConnectionFailedSerialOpenFailed = 'connectionFailed:SerialOpenFailed',
+  /** Write operation failed because the device is not connected. */
+  WriteFailedDeviceNotConnected = 'writeFailed:DeviceNotConnected',
+  /** Write operation failed because the data was empty. */
+  WriteFailedEmptyData = 'writeFailed:EmptyData',
+  /** Write operation failed because the connection was lost. */
+  WriteFailedConnectionLost = 'writeFailed:ConnectionLost',
+  /** Listing devices failed because devices cannot be listed. */
+  ListFailedCannotListDevices = 'listFailed:CannotListDevices',
 }

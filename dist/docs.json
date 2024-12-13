@@ -6,14 +6,16 @@
     "tags": [],
     "methods": [
       {
-        "name": "connectedDevices",
-        "signature": "() => Promise<{ devices: []; }>",
+        "name": "listDevices",
+        "signature": "() => Promise<{ devices: UsbDeviceInfo[]; }>",
         "parameters": [],
-        "returns": "Promise<{ devices: []; }>",
+        "returns": "Promise<{ devices: UsbDeviceInfo[]; }>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
-        "slug": "connecteddevices"
+        "complexTypes": [
+          "UsbDeviceInfo"
+        ],
+        "slug": "listdevices"
       },
       {
         "name": "openSerial",
@@ -44,16 +46,6 @@
         "slug": "closeserial"
       },
       {
-        "name": "readSerial",
-        "signature": "() => Promise<{ data: string; }>",
-        "parameters": [],
-        "returns": "Promise<{ data: string; }>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "readserial"
-      },
-      {
         "name": "writeSerial",
         "signature": "(options: { data: string; }) => Promise<void>",
         "parameters": [
@@ -71,17 +63,41 @@
       },
       {
         "name": "addListener",
-        "signature": "(eventName: 'log', listenerFunc: (data: { text: string; tag: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "signature": "(eventName: 'attached' | 'detached', listenerFunc: (device: UsbDeviceInfo) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
         "parameters": [
           {
             "name": "eventName",
             "docs": "",
-            "type": "'log'"
+            "type": "'attached' | 'detached'"
           },
           {
             "name": "listenerFunc",
             "docs": "",
-            "type": "(data: { text: string; tag: string; }) => void"
+            "type": "(device: UsbDeviceInfo) => void"
+          }
+        ],
+        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle",
+          "UsbDeviceInfo"
+        ],
+        "slug": "addlistenerattached--detached-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'connected' | 'disconnected', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'connected' | 'disconnected'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
           }
         ],
         "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
@@ -90,79 +106,7 @@
         "complexTypes": [
           "PluginListenerHandle"
         ],
-        "slug": "addlistenerlog-"
-      },
-      {
-        "name": "addListener",
-        "signature": "(eventName: 'connected', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
-        "parameters": [
-          {
-            "name": "eventName",
-            "docs": "",
-            "type": "'connected'"
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(data: UsbSerialDevice) => void"
-          }
-        ],
-        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "UsbSerialDevice"
-        ],
-        "slug": "addlistenerconnected-"
-      },
-      {
-        "name": "addListener",
-        "signature": "(eventName: 'attached', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
-        "parameters": [
-          {
-            "name": "eventName",
-            "docs": "",
-            "type": "'attached'"
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(data: UsbSerialDevice) => void"
-          }
-        ],
-        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "UsbSerialDevice"
-        ],
-        "slug": "addlistenerattached-"
-      },
-      {
-        "name": "addListener",
-        "signature": "(eventName: 'detached', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
-        "parameters": [
-          {
-            "name": "eventName",
-            "docs": "",
-            "type": "'detached'"
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(data: UsbSerialDevice) => void"
-          }
-        ],
-        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "UsbSerialDevice"
-        ],
-        "slug": "addlistenerdetached-"
+        "slug": "addlistenerconnected--disconnected-"
       },
       {
         "name": "addListener",
@@ -189,7 +133,30 @@
       },
       {
         "name": "addListener",
-        "signature": "(eventName: 'error', listenerFunc: (data: { error: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "signature": "(eventName: 'log', listenerFunc: (data: { text: string; tag: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'log'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { text: string; tag: string; }) => void"
+          }
+        ],
+        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistenerlog-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'error', listenerFunc: (data: { error: string | UsbSerialErrorMsg; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
         "parameters": [
           {
             "name": "eventName",
@@ -206,7 +173,8 @@
         "tags": [],
         "docs": "",
         "complexTypes": [
-          "PluginListenerHandle"
+          "PluginListenerHandle",
+          "UsbSerialErrorMsg"
         ],
         "slug": "addlistenererror-"
       }
@@ -215,6 +183,50 @@
   },
   "interfaces": [
     {
+      "name": "UsbDeviceInfo",
+      "slug": "usbdeviceinfo",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "deviceName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "vendorId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "productId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "deviceId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "serialNumber",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | null"
+        }
+      ]
+    },
+    {
       "name": "UsbSerialOptions",
       "slug": "usbserialoptions",
       "docs": "",
@@ -222,7 +234,14 @@
       "methods": [],
       "properties": [
         {
-          "name": "deviceId",
+          "name": "vendorId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "productId",
           "tags": [],
           "docs": "",
           "complexTypes": [],
@@ -233,7 +252,7 @@
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "number"
+          "type": "number | undefined"
         },
         {
           "name": "baudRate",
@@ -294,39 +313,70 @@
           "type": "() => Promise<void>"
         }
       ]
-    },
+    }
+  ],
+  "enums": [
     {
-      "name": "UsbSerialDevice",
-      "slug": "usbserialdevice",
-      "docs": "",
-      "tags": [],
-      "methods": [],
-      "properties": [
+      "name": "UsbSerialErrorMsg",
+      "slug": "usbserialerrormsg",
+      "members": [
         {
-          "name": "pid",
+          "name": "ConnectionFailedDeviceNotFound",
+          "value": "'connectionFailed:DeviceNotFound'",
           "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "number"
+          "docs": "Connection failed because the device was not found."
         },
         {
-          "name": "vid",
+          "name": "ConnectionFailedNoDriverForDevice",
+          "value": "'connectionFailed:NoDriverForDevice'",
           "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "number"
+          "docs": "Connection failed because no driver was found for the device."
         },
         {
-          "name": "did",
+          "name": "ConnectionFailedNoAvailablePorts",
+          "value": "'connectionFailed:NoAvailablePorts'",
           "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "number"
+          "docs": "Connection failed because no available ports were found."
+        },
+        {
+          "name": "ConnectionFailedUsbConnectionPermissionDenied",
+          "value": "'connectionFailed:UsbConnectionPermissionDenied'",
+          "tags": [],
+          "docs": "Connection failed because USB connection permission was denied."
+        },
+        {
+          "name": "ConnectionFailedSerialOpenFailed",
+          "value": "'connectionFailed:SerialOpenFailed'",
+          "tags": [],
+          "docs": "Connection failed because serial open operation failed."
+        },
+        {
+          "name": "WriteFailedDeviceNotConnected",
+          "value": "'writeFailed:DeviceNotConnected'",
+          "tags": [],
+          "docs": "Write operation failed because the device is not connected."
+        },
+        {
+          "name": "WriteFailedEmptyData",
+          "value": "'writeFailed:EmptyData'",
+          "tags": [],
+          "docs": "Write operation failed because the data was empty."
+        },
+        {
+          "name": "WriteFailedConnectionLost",
+          "value": "'writeFailed:ConnectionLost'",
+          "tags": [],
+          "docs": "Write operation failed because the connection was lost."
+        },
+        {
+          "name": "ListFailedCannotListDevices",
+          "value": "'listFailed:CannotListDevices'",
+          "tags": [],
+          "docs": "Listing devices failed because devices cannot be listed."
         }
       ]
     }
   ],
-  "enums": [],
   "typeAliases": [],
   "pluginConfigs": []
 }

@@ -1,15 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { WebPlugin } from '@capacitor/core';
 export class UsbSerialWeb extends WebPlugin {
-    connectedDevices() {
+    listDevices() {
         throw new Error('Method not implemented.');
     }
     openSerial(options) {
         throw new Error('Method not implemented: ' + JSON.stringify(options));
     }
     closeSerial() {
-        throw new Error('Method not implemented.');
-    }
-    readSerial() {
         throw new Error('Method not implemented.');
     }
     writeSerial(options) {

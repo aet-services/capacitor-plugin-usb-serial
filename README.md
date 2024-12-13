@@ -1,11 +1,11 @@
-# usb-serial-plugin
+# capacitor-plugin-usb-serial
 
 This plugin can be used for reading data from other device over the usb channel
 
 ## Install
 
 ```bash
-npm install usb-serial-plugin
+npm install @aet-services/capacitor-plugin-usb-serial
 npx cap sync
 ```
 
@@ -13,31 +13,30 @@ npx cap sync
 
 <docgen-index>
 
-* [`connectedDevices()`](#connecteddevices)
+* [`listDevices()`](#listdevices)
 * [`openSerial(...)`](#openserial)
 * [`closeSerial()`](#closeserial)
-* [`readSerial()`](#readserial)
 * [`writeSerial(...)`](#writeserial)
-* [`addListener('log', ...)`](#addlistenerlog-)
-* [`addListener('connected', ...)`](#addlistenerconnected-)
-* [`addListener('attached', ...)`](#addlistenerattached-)
-* [`addListener('detached', ...)`](#addlistenerdetached-)
+* [`addListener('attached' | 'detached', ...)`](#addlistenerattached--detached-)
+* [`addListener('connected' | 'disconnected', ...)`](#addlistenerconnected--disconnected-)
 * [`addListener('data', ...)`](#addlistenerdata-)
+* [`addListener('log', ...)`](#addlistenerlog-)
 * [`addListener('error', ...)`](#addlistenererror-)
 * [Interfaces](#interfaces)
+* [Enums](#enums)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### connectedDevices()
+### listDevices()
 
 ```typescript
-connectedDevices() => Promise<{ devices: []; }>
+listDevices() => Promise<{ devices: UsbDeviceInfo[]; }>
 ```
 
-**Returns:** <code>Promise&lt;{ devices: []; }&gt;</code>
+**Returns:** <code>Promise&lt;{ devices: UsbDeviceInfo[]; }&gt;</code>
 
 --------------------
 
@@ -64,17 +63,6 @@ closeSerial() => Promise<void>
 --------------------
 
 
-### readSerial()
-
-```typescript
-readSerial() => Promise<{ data: string; }>
-```
-
-**Returns:** <code>Promise&lt;{ data: string; }&gt;</code>
-
---------------------
-
-
 ### writeSerial(...)
 
 ```typescript
@@ -88,64 +76,32 @@ writeSerial(options: { data: string; }) => Promise<void>
 --------------------
 
 
-### addListener('log', ...)
+### addListener('attached' | 'detached', ...)
 
 ```typescript
-addListener(eventName: 'log', listenerFunc: (data: { text: string; tag: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'attached' | 'detached', listenerFunc: (device: UsbDeviceInfo) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
-| Param              | Type                                                           |
-| ------------------ | -------------------------------------------------------------- |
-| **`eventName`**    | <code>'log'</code>                                             |
-| **`listenerFunc`** | <code>(data: { text: string; tag: string; }) =&gt; void</code> |
+| Param              | Type                                                                         |
+| ------------------ | ---------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'attached' \| 'detached'</code>                                        |
+| **`listenerFunc`** | <code>(device: <a href="#usbdeviceinfo">UsbDeviceInfo</a>) =&gt; void</code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
 
 --------------------
 
 
-### addListener('connected', ...)
+### addListener('connected' | 'disconnected', ...)
 
 ```typescript
-addListener(eventName: 'connected', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'connected' | 'disconnected', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
-| Param              | Type                                                                           |
-| ------------------ | ------------------------------------------------------------------------------ |
-| **`eventName`**    | <code>'connected'</code>                                                       |
-| **`listenerFunc`** | <code>(data: <a href="#usbserialdevice">UsbSerialDevice</a>) =&gt; void</code> |
-
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
-
---------------------
-
-
-### addListener('attached', ...)
-
-```typescript
-addListener(eventName: 'attached', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-| Param              | Type                                                                           |
-| ------------------ | ------------------------------------------------------------------------------ |
-| **`eventName`**    | <code>'attached'</code>                                                        |
-| **`listenerFunc`** | <code>(data: <a href="#usbserialdevice">UsbSerialDevice</a>) =&gt; void</code> |
-
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
-
---------------------
-
-
-### addListener('detached', ...)
-
-```typescript
-addListener(eventName: 'detached', listenerFunc: (data: UsbSerialDevice) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-| Param              | Type                                                                           |
-| ------------------ | ------------------------------------------------------------------------------ |
-| **`eventName`**    | <code>'detached'</code>                                                        |
-| **`listenerFunc`** | <code>(data: <a href="#usbserialdevice">UsbSerialDevice</a>) =&gt; void</code> |
+| Param              | Type                                       |
+| ------------------ | ------------------------------------------ |
+| **`eventName`**    | <code>'connected' \| 'disconnected'</code> |
+| **`listenerFunc`** | <code>() =&gt; void</code>                 |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
 
@@ -168,10 +124,26 @@ addListener(eventName: 'data', listenerFunc: (data: { data: string; }) => void) 
 --------------------
 
 
+### addListener('log', ...)
+
+```typescript
+addListener(eventName: 'log', listenerFunc: (data: { text: string; tag: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+| Param              | Type                                                           |
+| ------------------ | -------------------------------------------------------------- |
+| **`eventName`**    | <code>'log'</code>                                             |
+| **`listenerFunc`** | <code>(data: { text: string; tag: string; }) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+
 ### addListener('error', ...)
 
 ```typescript
-addListener(eventName: 'error', listenerFunc: (data: { error: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'error', listenerFunc: (data: { error: string | UsbSerialErrorMsg; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
 | Param              | Type                                               |
@@ -187,18 +159,30 @@ addListener(eventName: 'error', listenerFunc: (data: { error: string; }) => void
 ### Interfaces
 
 
+#### UsbDeviceInfo
+
+| Prop               | Type                        |
+| ------------------ | --------------------------- |
+| **`deviceName`**   | <code>string</code>         |
+| **`vendorId`**     | <code>number</code>         |
+| **`productId`**    | <code>number</code>         |
+| **`deviceId`**     | <code>number</code>         |
+| **`serialNumber`** | <code>string \| null</code> |
+
+
 #### UsbSerialOptions
 
-| Prop           | Type                 |
-| -------------- | -------------------- |
-| **`deviceId`** | <code>number</code>  |
-| **`portNum`**  | <code>number</code>  |
-| **`baudRate`** | <code>number</code>  |
-| **`dataBits`** | <code>number</code>  |
-| **`stopBits`** | <code>number</code>  |
-| **`parity`**   | <code>number</code>  |
-| **`dtr`**      | <code>boolean</code> |
-| **`rts`**      | <code>boolean</code> |
+| Prop            | Type                 |
+| --------------- | -------------------- |
+| **`vendorId`**  | <code>number</code>  |
+| **`productId`** | <code>number</code>  |
+| **`portNum`**   | <code>number</code>  |
+| **`baudRate`**  | <code>number</code>  |
+| **`dataBits`**  | <code>number</code>  |
+| **`stopBits`**  | <code>number</code>  |
+| **`parity`**    | <code>number</code>  |
+| **`dtr`**       | <code>boolean</code> |
+| **`rts`**       | <code>boolean</code> |
 
 
 #### PluginListenerHandle
@@ -208,12 +192,21 @@ addListener(eventName: 'error', listenerFunc: (data: { error: string; }) => void
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 
-#### UsbSerialDevice
+### Enums
 
-| Prop      | Type                |
-| --------- | ------------------- |
-| **`pid`** | <code>number</code> |
-| **`vid`** | <code>number</code> |
-| **`did`** | <code>number</code> |
+
+#### UsbSerialErrorMsg
+
+| Members                                             | Value                                                         | Description                                                     |
+| --------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| **`ConnectionFailedDeviceNotFound`**                | <code>'connectionFailed:DeviceNotFound'</code>                | Connection failed because the device was not found.             |
+| **`ConnectionFailedNoDriverForDevice`**             | <code>'connectionFailed:NoDriverForDevice'</code>             | Connection failed because no driver was found for the device.   |
+| **`ConnectionFailedNoAvailablePorts`**              | <code>'connectionFailed:NoAvailablePorts'</code>              | Connection failed because no available ports were found.        |
+| **`ConnectionFailedUsbConnectionPermissionDenied`** | <code>'connectionFailed:UsbConnectionPermissionDenied'</code> | Connection failed because USB connection permission was denied. |
+| **`ConnectionFailedSerialOpenFailed`**              | <code>'connectionFailed:SerialOpenFailed'</code>              | Connection failed because serial open operation failed.         |
+| **`WriteFailedDeviceNotConnected`**                 | <code>'writeFailed:DeviceNotConnected'</code>                 | Write operation failed because the device is not connected.     |
+| **`WriteFailedEmptyData`**                          | <code>'writeFailed:EmptyData'</code>                          | Write operation failed because the data was empty.              |
+| **`WriteFailedConnectionLost`**                     | <code>'writeFailed:ConnectionLost'</code>                     | Write operation failed because the connection was lost.         |
+| **`ListFailedCannotListDevices`**                   | <code>'listFailed:CannotListDevices'</code>                   | Listing devices failed because devices cannot be listed.        |
 
 </docgen-api>

@@ -1,0 +1,94 @@
+name: CI
+
+on: push
+
+env:
+  NODE_VERSION: 20
+  JAVA_VERSION: 17
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Lint script
+        run: npm run lint
+
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Android
+        run: npm run verify:android
+
+      - name: Verify Web
+        run: npm run verify:web
+
+      - name: Build
+        run: npm run build
+
+  publish:
+    needs: [lint, build]
+    runs-on: ubuntu-24.04
+    if: startswith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          cat <<EOF > .npmrc
+          registry=https://registry.npmjs.org/
+          @aet-services:registry=https://npm.pkg.github.com/
+          //npm.pkg.github.com/:_authToken=${{secrets.NPM_PKG_GITHUB_AUTH_TOKEN}}
+          EOF
+          npm ci
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: ${{ contains(github.event.head_commit.message, 'beta') }}

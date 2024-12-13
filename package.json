@@ -1,32 +1,34 @@
 {
-  "name": "usb-serial-plugin",
-  "version": "0.0.14",
+  "name": "@aet-services/capacitor-plugin-usb-serial",
+  "version": "0.1.0",
   "description": "This plugin can be used for reading data from other device over the usb channel",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "type": "module",
   "unpkg": "dist/plugin.js",
   "files": [
-    "android/src/main/",
-    "android/build.gradle",
+    "android/",
     "dist/",
     "ios/Plugin/",
     "UsbSerialPlugin.podspec"
   ],
-  "author": "asad96",
+  "author": "Ludovic Lindor <ludovic.lindor@aet.fr>",
   "license": "MIT",
+  "publishConfig": {
+    "@aet-services:registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CoooWeee/capacitor-plugin-usb-serial.git"
+    "url": "git+https://github.com/aet-services/capacitor-plugin-usb-serial.git"
   },
   "bugs": {
-    "url": "https://github.com/CoooWeee/capacitor-plugin-usb-serial/issues"
+    "url": "https://github.com/aet-services/capacitor-plugin-usb-serial/issues"
   },
   "keywords": [
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "usbserial"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
@@ -35,35 +37,38 @@
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- autocorrect --format",
-    "eslint": "eslint . --ext ts",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
+    "eslint": "eslint src",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
     "swiftlint": "node-swiftlint",
     "docgen": "docgen --api UsbSerialPlugin --output-readme README.md --output-json dist/docs.json",
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release": "pnpm dlx bumpp"
   },
   "devDependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/cli": "^6.1.2",
-    "@capacitor/core": "^6.1.2",
-    "@capacitor/docgen": "^0.2.2",
-    "@capacitor/ios": "^6.1.2",
-    "@ionic/eslint-config": "^0.4.0",
-    "@ionic/prettier-config": "^4.0.0",
-    "@ionic/swiftlint-config": "^1.1.2",
-    "@typescript-eslint/eslint-plugin": "8.5.0",
-    "eslint": "^9.10.0",
-    "prettier": "~3.3.3",
-    "prettier-plugin-java": "~2.6.4",
-    "rimraf": "^6.0.1",
-    "rollup": "^4.21.3",
-    "swiftlint": "^1.0.2",
-    "typescript": "~5.4.5"
+    "@capacitor/android": "6.2.0",
+    "@capacitor/cli": "6.2.0",
+    "@capacitor/core": "6.2.0",
+    "@capacitor/docgen": "0.3.0",
+    "@capacitor/ios": "6.2.0",
+    "@ionic/eslint-config": "0.4.0",
+    "@ionic/prettier-config": "4.0.0",
+    "@ionic/swiftlint-config": "2.0.0",
+    "@types/node": "22.10.1",
+    "bumpp": "9.8.1",
+    "eslint": "8.57.0",
+    "prettier": "3.4.2",
+    "prettier-plugin-java": "2.6.4",
+    "rimraf": "6.0.1",
+    "rollup": "4.28.0",
+    "swiftlint": "2.0.0",
+    "typescript": "5.6.3",
+    "typescript-eslint": "8.17.0"
   },
   "peerDependencies": {
-    "@capacitor/core": "^6.1.2"
+    "@capacitor/core": "6.2.0"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
@@ -77,5 +82,8 @@
     "android": {
       "src": "android"
     }
+  },
+  "engines": {
+    "node": ">= 20"
   }
 }
