@@ -79,13 +79,13 @@ writeSerial(options: { data: string; }) => Promise<void>
 ### addListener('attached' | 'detached', ...)
 
 ```typescript
-addListener(eventName: 'attached' | 'detached', listenerFunc: (device: UsbDeviceInfo) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'attached' | 'detached', listenerFunc: (data: { device: UsbDeviceInfo; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
-| Param              | Type                                                                         |
-| ------------------ | ---------------------------------------------------------------------------- |
-| **`eventName`**    | <code>'attached' \| 'detached'</code>                                        |
-| **`listenerFunc`** | <code>(device: <a href="#usbdeviceinfo">UsbDeviceInfo</a>) =&gt; void</code> |
+| Param              | Type                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'attached' \| 'detached'</code>                                                   |
+| **`listenerFunc`** | <code>(data: { device: <a href="#usbdeviceinfo">UsbDeviceInfo</a>; }) =&gt; void</code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
 

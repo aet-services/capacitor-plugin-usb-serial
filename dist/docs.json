@@ -63,7 +63,7 @@
       },
       {
         "name": "addListener",
-        "signature": "(eventName: 'attached' | 'detached', listenerFunc: (device: UsbDeviceInfo) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "signature": "(eventName: 'attached' | 'detached', listenerFunc: (data: { device: UsbDeviceInfo; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
         "parameters": [
           {
             "name": "eventName",
@@ -73,7 +73,7 @@
           {
             "name": "listenerFunc",
             "docs": "",
-            "type": "(device: UsbDeviceInfo) => void"
+            "type": "(data: { device: UsbDeviceInfo; }) => void"
           }
         ],
         "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",

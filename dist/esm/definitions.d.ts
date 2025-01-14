@@ -26,7 +26,9 @@ export interface UsbSerialPlugin {
     writeSerial(options: {
         data: string;
     }): Promise<void>;
-    addListener(eventName: 'attached' | 'detached', listenerFunc: (device: UsbDeviceInfo) => void): Promise<PluginListenerHandle> & PluginListenerHandle;
+    addListener(eventName: 'attached' | 'detached', listenerFunc: (data: {
+        device: UsbDeviceInfo;
+    }) => void): Promise<PluginListenerHandle> & PluginListenerHandle;
     addListener(eventName: 'connected' | 'disconnected', listenerFunc: () => void): Promise<PluginListenerHandle> & PluginListenerHandle;
     addListener(eventName: 'data', listenerFunc: (data: {
         data: string;
