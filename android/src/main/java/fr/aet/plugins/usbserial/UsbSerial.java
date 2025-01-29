@@ -93,7 +93,7 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
     @Override
     public void onNewData(byte[] data) {
         mainLooper.post(() -> {
-            callback.receivedData(new String(data));
+            callback.receivedData(data);
         });
     }
 
@@ -179,15 +179,15 @@ public class UsbSerial implements SerialInputOutputManager.Listener {
         }
     }
 
-    public void writeSerial(String str) throws IOException {
+    public void writeSerial(byte[] data) throws IOException {
         if (this.currentDevice == null) {
             throw new IOException("writeFailed:DeviceNotConnected");
         }
-        if (str.length() == 0) {
+        if (data.length == 0) {
             throw new IOException("writeFailed:EmptyData");
         }
         try {
-            usbSerialPort.write(str.getBytes(), WRITE_WAIT_MILLIS);
+            usbSerialPort.write(data, WRITE_WAIT_MILLIS);
         } catch (Exception e) {
             closeSerial();
             throw new IOException("writeFailed:ConnectionLost");

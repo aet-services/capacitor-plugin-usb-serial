@@ -1,6 +1,7 @@
 package fr.aet.plugins.usbserial;
 
 import android.hardware.usb.UsbDevice;
+import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,7 +89,8 @@ public class UsbSerialPlugin extends Plugin implements Callback {
     @PluginMethod
     public void writeSerial(PluginCall call) {
         try {
-            String data = call.hasOption("data") ? call.getString("data") : "";
+            String base64String = call.hasOption("data") ? call.getString("data") : "";
+            byte[] data = Base64.decode(base64String, Base64.DEFAULT);
             usbSerial.writeSerial(data);
             call.resolve(new JSObject());
         } catch (Exception e) {
@@ -122,9 +124,10 @@ public class UsbSerialPlugin extends Plugin implements Callback {
     }
 
     @Override
-    public void receivedData(String Data) {
+    public void receivedData(byte[] data) {
+        String base64String = Base64.encodeToString(data, Base64.NO_WRAP);
         JSObject ret = new JSObject();
-        ret.put("data", Data);
+        ret.put("data", base64String);
         notifyListeners("data", ret);
     }
 

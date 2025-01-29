@@ -9,7 +9,7 @@ public interface Callback {
     void usbDeviceDetached(JSONObject deviceInfo);
     void connected();
     void disconnected();
-    void receivedData(String data);
+    void receivedData(byte[] data);
     void error(Error error);
     void log(String tag, String text);
 }
