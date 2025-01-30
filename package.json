@@ -10,7 +10,8 @@
     "android/",
     "dist/",
     "ios/Plugin/",
-    "UsbSerialPlugin.podspec"
+    "UsbSerialPlugin.podspec",
+    "scripts/verifyAndroid.js"
   ],
   "author": "Ludovic Lindor <ludovic.lindor@aet.fr>",
   "license": "MIT",
